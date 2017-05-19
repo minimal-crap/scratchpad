@@ -1,2 +1,5 @@
-./scratchpad.sublime-project
-./scratchpad.sublime-workspace
+*.pyc
+scratchpad.sublime-project
+scratchpad.sublime-workspace
+
+logs
