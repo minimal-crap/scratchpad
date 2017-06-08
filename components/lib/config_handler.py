@@ -18,10 +18,20 @@ class MinimalConfiguration:
         }
         self.logger_instance = MinimalLogger(**logger_params)
 
-    def get_config_value(section=None, key=None):
+    def get_config_value(self, section=None, key=None):
         """Fetch value of particular key from particular section."""
         try:
-            # do the needful
+            return self.config_parser.get(section, key)
         except Exception as error:
             self.logger_instance.logger.error(
             "MinimalConfiguration::get_config_value:{}".format(error.message))
+
+    def set_config_value(self, section=None, key=None, value=None):
+        """Set value of particular section's key."""
+        try:
+            self.config_parser.set(section, key, value)
+            with open(self.config_file_path, 'wb') as config_file_handle:
+                self.config_parser.write(config_file_handle)
+        except Exception as error:
+            self.logger_instance.logger.error(
+            "MinimalConfiguration::set_config_value:{}".format(error.message))
