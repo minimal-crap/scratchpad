@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-from settings import CONFIG_FILE_PATH, LOG_DIR
+from settings import CONFIG_FILE_PATH
 from minimal_logger import MinimalLogger
 
 
@@ -24,7 +24,8 @@ class MinimalConfiguration:
             return self.config_parser.get(section, key)
         except Exception as error:
             self.logger_instance.logger.error(
-            "MinimalConfiguration::get_config_value:{}".format(error.message))
+                "MinimalConfiguration::get_config_value:{}".format(
+                    error.message))
 
     def set_config_value(self, section=None, key=None, value=None):
         """Set value of particular section's key."""
@@ -34,4 +35,5 @@ class MinimalConfiguration:
                 self.config_parser.write(config_file_handle)
         except Exception as error:
             self.logger_instance.logger.error(
-            "MinimalConfiguration::set_config_value:{}".format(error.message))
+                "MinimalConfiguration::set_config_value:{}".format(
+                    error.message))

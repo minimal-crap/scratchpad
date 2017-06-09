@@ -1,5 +1,3 @@
-
-from tornado.ioloop import IOLoop
 from tornado.websocket import WebSocketHandler
 from tornado.web import Application
 
@@ -46,4 +44,3 @@ class MainApplicaion(Application):
 
         # calling super class' init method
         Application.__init__(self, handlers)
-        
