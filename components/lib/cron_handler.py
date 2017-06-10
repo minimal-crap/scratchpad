@@ -22,6 +22,7 @@ class MinimalCronHandler:
         }
         self.logger_instance = MinimalLogger(**logger_params)
         try:
+            # checking if mandatory path has been provided
             if scripts_dir is not None:
                 self.scripts_dir = scripts_dir
             else:
@@ -42,6 +43,17 @@ class MinimalCronHandler:
             else:
                 self.output_path = None
 
+            # checking if supplied paths exist
+            if not os.path.exists(self.scripts_dir):
+                raise Exception("invalid cron scripts directory")
+
+            if not os.path.exists(self.interpreter_path):
+                raise Exception("invalid cron scripts interpreter path")
+
+            if self.output_path is not None and not os.path.exists(
+                    self.output_path):
+                raise Exception("invalid cron scripts output path")
+
         except Exception as error:
             self.logger_instance.logger.error(
                 "MinimalCronHandler::__init__:{}".format(error.message))
@@ -49,17 +61,11 @@ class MinimalCronHandler:
     def prepare_command(self):
         """Prepare cron task command from provided variables"""
         try:
-            if self.output_path is not None and not os.path.exists(
-                    self.output_path):
-                raise Exception("invalid cron task output path")
             script_absolute_path = os.path.join(self.scripts_dir,
                                                 self.script_name)
 
             if not os.path.exists(script_absolute_path):
                 raise Exception("invalid cron task script path")
-
-            if not os.path.exists(self.interpreter_path):
-                raise Exception("invalid cron task interpreter path")
 
             if self.output_path is not None:
                 cron_command = "{} {} >> {}".format(
@@ -77,3 +83,25 @@ class MinimalCronHandler:
         except Exception as error:
             self.logger_instance.logger.error(
                 "MinimalCronHandler::prepare_command:{}".format(error.message))
+
+    def prepare_execution_frequency(self):
+        """Prepares the frequency at which cron tasks are executed."""
+        try:
+            pass
+        except Exception as error:
+            self.logger_instance.logger.error(
+                "MinimalCronHandler::prepare_execution_frequency:{}".format(
+                    error.message
+                )
+            )
+
+    def add_cron_task(self):
+        """Adds the cron task command to crontab file."""
+        try:
+            pass
+        except Exception as error:
+            self.logger_instance.logger.error(
+                "MinimalCronHandler::add_cron_task:{}".format(
+                    error.message
+                )
+            )
