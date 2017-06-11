@@ -1,4 +1,5 @@
 import os
+import getpass
 
 from crontab import CronTab
 
@@ -22,6 +23,8 @@ class MinimalCronHandler:
         }
         self.logger_instance = MinimalLogger(**logger_params)
         try:
+            self.cron = None
+            self.cron_job = None
             # checking if mandatory path has been provided
             if scripts_dir is not None:
                 self.scripts_dir = scripts_dir
@@ -84,10 +87,15 @@ class MinimalCronHandler:
             self.logger_instance.logger.error(
                 "MinimalCronHandler::prepare_command:{}".format(error.message))
 
-    def prepare_execution_frequency(self):
+    def prepare_execution_frequency(self, frequency_param=None, command=None):
         """Prepares the frequency at which cron tasks are executed."""
         try:
-            pass
+            if frequency_param is None:
+                raise Exception('frequency parameter not provided')
+            self.cron = CronTab(user=getpass.getuser())
+            self.cron_job = self.cron.new(command=command)
+            self.cron_job.setall(frequency_param)
+            return self.cron_job.is_valid()
         except Exception as error:
             self.logger_instance.logger.error(
                 "MinimalCronHandler::prepare_execution_frequency:{}".format(
@@ -98,7 +106,7 @@ class MinimalCronHandler:
     def add_cron_task(self):
         """Adds the cron task command to crontab file."""
         try:
-            pass
+            self.cron.write_to_user()
         except Exception as error:
             self.logger_instance.logger.error(
                 "MinimalCronHandler::add_cron_task:{}".format(
