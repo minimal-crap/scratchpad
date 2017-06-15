@@ -1,4 +1,10 @@
 import os
+import sys
+import getpass
+import socket
+import threading
+import select
+from optparse import OptionParser
 
 from minimal_logger import MinimalLogger
 
@@ -6,7 +12,10 @@ from minimal_logger import MinimalLogger
 class MinimalShellHandler:
     """MinimalShellHandler to manage reverse shell from the machine."""
 
-    def __init__(self, ssh_port=None, pkey_passphrase=None, verbose_mode=None):
+    def __init__(self,
+                 ssh_port=None,
+                 pkey_passphrase=None,
+                 verbose_mode=False):
         self.user = os.getenv('USER')
         logger_params = {
             'file_name': 'error.log',
@@ -27,3 +36,6 @@ class MinimalShellHandler:
                     error.message
                 )
             )
+
+    def verbose(self):
+    """"""
